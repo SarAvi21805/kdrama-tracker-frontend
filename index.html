@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-Drama & Anime Magic 🌸</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>My Magical Tracker ✨</h1>
+            <p>Animes, K-Dramas & Sweet OSTs</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Sección: Agregar nuevas series -->
+        <section id="form-container" class="glass-card">
+            <h2 class="section-title">Añadir Nueva Historia 🎀</h2>
+            <form id="series-form">
+                <input type="text" id="title" placeholder="Título (ej: Guardian: The Lonely God)" required>
+                <input type="text" id="genre" placeholder="Género (ej: Romance, Fantasía)" required>
+                <input type="url" id="image_url" placeholder="URL de la Imagen (Poster)">
+                <textarea id="description" placeholder="¿De qué trata?"></textarea>
+                <button type="submit" class="btn-main">Guardar en mi lista ✨</button>
+            </form>
+        </section>
+
+        <!-- Sección: Listado de series -->
+        <section id="list-container">
+            <div class="list-header">
+                <h2 class="section-title">Mis Favoritos 💖</h2>
+                <div class="filters">
+                    <input type="text" id="search-input" placeholder="Buscar por nombre...">
+                </div>
+            </div>
+            <div id="series-grid" class="grid">
+                <!-- Tarjetas (JS) -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Reproductor de Música Flotante -->
+    <div id="music-player" class="player-hidden">
+        <div class="player-content">
+            <span id="now-playing">Reproduciendo: Ninguna</span>
+            <audio id="audio-element" controls></audio>
+            <button onclick="document.getElementById('music-player').classList.add('player-hidden')">🌸 Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Script como Módulo -->
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
