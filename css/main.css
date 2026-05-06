@@ -1,0 +1,50 @@
+:root {
+    --bg-color: #fff0f5;      /* Lavender Blush */
+    --primary-pink: #ffb6c1;  /* Light Pink */
+    --accent-pink: #ff69b4;   /* Hot Pink */
+    --text-indigo: #4b0082;   /* Indigo */
+    --white: #ffffff;
+    --glass: rgba(255, 255, 255, 0.7);
+}
+
+body {
+    font-family: 'Quicksand', sans-serif;
+    background-color: var(--bg-color);
+    background-image: radial-gradient(var(--primary-pink) 0.5px, transparent 0.5px); /* Puntos decorativos */
+    background-size: 20px 20px;
+    color: var(--text-indigo);
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+header {
+    background-color: var(--primary-pink);
+    color: var(--white);
+    padding: 3rem 1rem;
+    text-align: center;
+    border-bottom: 6px solid var(--accent-pink);
+    border-radius: 0 0 50px 50px;
+    box-shadow: 0 10px 20px rgba(255, 105, 180, 0.2);
+}
+
+.section-title {
+    color: var(--accent-pink);
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.glass-card {
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    padding: 2rem;
+    border: 2px solid var(--primary-pink);
+    margin-bottom: 3rem;
+}
