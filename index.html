@@ -17,6 +17,12 @@
         </div>
     </header>
 
+    <div class="theme-switcher">
+        <button onclick="changeTheme('default')" title="Elegante">💎</button>
+        <button onclick="changeTheme('neutral')" title="Neutro">🍃</button>
+        <button onclick="changeTheme('dark')" title="Oscuro">🌑</button>
+    </div>
+    
     <main class="container">
         <!-- Sección: Agregar nuevas series -->
         <section id="form-container" class="glass-card">
@@ -28,6 +34,19 @@
                 <textarea id="description" placeholder="¿De qué trata?"></textarea>
                 <button type="submit" class="btn-main">Guardar en mi lista ✨</button>
             </form>
+        </section>
+
+        <section id="list-container">
+            <div class="list-controls">
+                <div class="filter-group">
+                    <button class="filter-btn active" onclick="filterByCategory('all')">Todos</button>
+                    <button class="filter-btn" onclick="filterByCategory('K-Drama')">K-Dramas</button>
+                    <button class="filter-btn" onclick="filterByCategory('Anime')">Animes</button>
+                </div>
+                <input type="text" id="search-input" placeholder="Buscar por título..." onkeyup="searchSeries()">
+            </div>
+            
+            <div id="series-grid" class="grid"></div>
         </section>
 
         <!-- Sección: Listado de series -->
