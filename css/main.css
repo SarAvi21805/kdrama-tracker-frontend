@@ -1,10 +1,36 @@
+/* Paletas */
+
 :root {
-    --bg-color: #fff0f5;      /* Lavender Blush */
-    --primary-pink: #ffb6c1;  /* Light Pink */
-    --accent-pink: #ff69b4;   /* Hot Pink */
-    --text-indigo: #4b0082;   /* Indigo */
-    --white: #ffffff;
-    --glass: rgba(255, 255, 255, 0.7);
+    /* Tema Default: Mauve */
+    --bg-color: #f2e8ff;
+    --header-bg: #b3affd;
+    --header-text: #391082;
+    --card-bg: #fadbff;
+    --text-main: #334155;
+    --text-muted: #64748b;
+    --accent: #b3affd;
+    --accent-hover: #9e96fc;
+    --border: #d8b4fe;
+}
+
+/* Tema Neutro: Sage & Slate (naturaleza) */
+[data-theme="neutral"] {
+    --bg-color: #dffadf;
+    --header-color: #daffda; 
+    --accent-color: #4a5d4e;
+    --card-bg: #e8ffe4;
+    --text-color: #2c3e50;
+    --input-border: #bdc3c7;
+}
+
+/* Tema Oscuro: Deep Charcoal */
+[data-theme="dark"] {
+    --bg-color: #121212;
+    --header-color: #1f1f1f;
+    --accent-color: #bb86fc; 
+    --card-bg: #1e1e1e;
+    --text-color: #e0e0e0;
+    --input-border: #333333;
 }
 
 body {
@@ -12,9 +38,10 @@ body {
     background-color: var(--bg-color);
     background-image: radial-gradient(var(--primary-pink) 0.5px, transparent 0.5px); /* Puntos decorativos */
     background-size: 20px 20px;
-    color: var(--text-indigo);
+    color: var(--text-main);
     margin: 0;
     padding: 0;
+    transition: background 0.3s ease;
 }
 
 .container {
@@ -24,13 +51,11 @@ body {
 }
 
 header {
-    background-color: var(--primary-pink);
-    color: var(--white);
-    padding: 3rem 1rem;
+    background-color: var(--header-bg);
+    color: var(--header-text);
+    padding: 2rem 1rem;
     text-align: center;
-    border-bottom: 6px solid var(--accent-pink);
-    border-radius: 0 0 50px 50px;
-    box-shadow: 0 10px 20px rgba(255, 105, 180, 0.2);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 .section-title {
@@ -41,10 +66,47 @@ header {
 }
 
 .glass-card {
-    background: var(--glass);
+    background: var(--card-bg);
     backdrop-filter: blur(10px);
     border-radius: 30px;
     padding: 2rem;
-    border: 2px solid var(--primary-pink);
+    border: 1px solid var(--border);
     margin-bottom: 3rem;
+    max-width: 800px;
+    margin: 2rem auto;
+}
+
+#series-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Dos columnas */
+    gap: 15px;
+}
+
+input, textarea {
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg-color);
+    color: var(--text-main);
+}
+
+textarea { 
+    grid-column: span 2;
+    resize: vertical;
+    min-height: 100px; 
+}
+
+.btn-main {
+    background-color: var(--accent);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-main:hover {
+    background-color: var(--accent-hover);
 }
