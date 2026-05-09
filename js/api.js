@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8080";
+const API_URL = "https://kdrama-tracker-backend.onrender.com";
 
 export const api = {
     // Obtener todas las series
