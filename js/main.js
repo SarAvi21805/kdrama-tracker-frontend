@@ -70,33 +70,6 @@ window.changeTheme = (theme) => {
 const savedTheme = localStorage.getItem('selected-theme');
 if(savedTheme) window.changeTheme(savedTheme);
 
-form.addEventListener('submit', async (e) => {
-    e.preventDefault(); // Evita que la página se recargue
-
-    // Recoge datos del formulario
-    const newSerie = {
-        title: document.getElementById('title').value,
-        genre: document.getElementById('genre').value,
-        image_url: document.getElementById('image_url').value,
-        description: document.getElementById('description').value,
-        category: document.getElementById('category').value,
-        rating: parseInt(document.getElementById('rating').value),
-        is_favorite: false
-    };
-
-    try {
-        // Envia a Go a través de api.js
-        await api.create(newSerie);
-        
-        // Limpia formulario y recarga la lista
-        form.reset();
-        alert("¡Historia guardada con éxito! ✨🌸");
-        loadSeries();
-    } catch (error) {
-        alert("¡Oh no! No se pudo guardar. Revisa el servidor.");
-    }
-});
-
 // ELIMINAR
 window.deleteSerie = async (id) => {
     if (confirm("¿Seguro que quieres eliminar esta historia? 💔")) {

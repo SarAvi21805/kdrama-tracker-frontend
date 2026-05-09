@@ -24,7 +24,7 @@ export const api = {
     async delete(id) {
         await fetch(`${API_URL}/series/${id}`, { method: 'DELETE' });
     },
-    // Editar serie
+    // Editar
     async update(id, data) {
         await fetch(`${API_URL}/series/${id}`, {
             method: 'PUT',
