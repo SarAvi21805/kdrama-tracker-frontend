@@ -5,7 +5,7 @@
     --bg-color: #f2e8ff;
     --header-bg: #b3affd;
     --header-text: #391082;
-    --card-bg: #fadbff;
+    --card-bg: #fad7fd;
     --text-main: #334155;
     --text-muted: #64748b;
     --accent: #b3affd;
@@ -109,4 +109,32 @@ textarea {
 
 .btn-main:hover {
     background-color: var(--accent-hover);
+}
+
+.list-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px 0;
+    align-items: center;
+}
+
+.filter-group {
+    display: flex;
+    gap: 10px;
+}
+
+.filter-btn {
+    padding: 8px 15px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    cursor: pointer;
+    font-family: inherit;
+}
+
+#search-input {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
 }

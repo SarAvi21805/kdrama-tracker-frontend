@@ -30,9 +30,16 @@
             <form id="series-form">
                 <input type="text" id="title" placeholder="Título (ej: Guardian: The Lonely God)" required>
                 <input type="text" id="genre" placeholder="Género (ej: Romance, Fantasía)" required>
+                <select id="category" required>
+                    <option value="" disabled selected>Selecciona Categoría</option>
+                    <option value="Anime">Anime</option>
+                    <option value="K-drama">K-drama</option>
+                </select>
+                <input type="number" id="rating" placeholder="Rating (1-5)" min="1" max="5" required>
                 <input type="url" id="image_url" placeholder="URL de la Imagen (Poster)">
                 <textarea id="description" placeholder="¿De qué trata?"></textarea>
                 <button type="submit" class="btn-main">Guardar en mi lista ✨</button>
+                <button type="button" id="btn-cancel" style="display: none;" class="btn-secondary" onclick="window.cancelEdit()">CANCELAR</button>
             </form>
         </section>
 
