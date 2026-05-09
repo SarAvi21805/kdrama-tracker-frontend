@@ -1,64 +1,116 @@
 import { api } from './api.js';
-import { SerieCard } from './components.js';
+import { SerieCard, SerieDetail } from './components.js';
 
 const grid = document.getElementById('series-grid');
 const form = document.getElementById('series-form');
+const formContainer = document.getElementById('form-container');
+const listContainer = document.getElementById('list-container');
+const detailContainer = document.getElementById('serie-detail-container');
 
-let allSeries = []; // Copia local para filtrar
+let allSeries = [];
+let editingId = null;
 
 async function loadSeries() {
     try {
         allSeries = await api.getAll();
-        console.log("Datos recibidos ✨:", allSeries);
         renderGrid(allSeries);
     } catch (err) {
-        document.getElementById('series-grid').innerHTML = "<p>Error de conexión 😴</p>";
+        grid.innerHTML = "<p>Error de conexion. Intenta de nuevo mas tarde.</p>";
     }
 }
 
-// Función global para que el botón de la tarjeta
-window.playMusic = (title) => {
-    const player = document.getElementById('music-player');
-    const text = document.getElementById('now-playing');
-    player.classList.remove('player-hidden');
-    text.innerText = `Reproduciendo OST: ${title} ✨`;
-};
-
 function renderGrid(data) {
-    const grid = document.getElementById('series-grid');
     if (!data || data.length === 0) {
         grid.innerHTML = `
-            <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
-                <p style="font-size: 1.5rem;">Aún no tienes historias guardadas...</p>
-                <p>¡Añade tu primer K-Drama o Anime arriba! ✨</p>
+            <div class="empty-state">
+                <p>Aun no tienes historias guardadas...</p>
+                <span>Anade tu primer K-Drama o Anime arriba.</span>
             </div>
         `;
         return;
     }
-    grid.innerHTML = data.map(s => SerieCard(s)).join('');
+    grid.innerHTML = data.map((serie) => SerieCard(serie)).join('');
 }
 
-// Lógica de Búsqueda
+function showDetailView() {
+    formContainer.hidden = true;
+    listContainer.hidden = true;
+    detailContainer.hidden = false;
+}
+
+function showListView() {
+    formContainer.hidden = false;
+    listContainer.hidden = false;
+    detailContainer.hidden = true;
+    detailContainer.innerHTML = '';
+}
+
+async function renderSerieDetail(id) {
+    showDetailView();
+    detailContainer.innerHTML = '<div class="detail-loading">Cargando detalle...</div>';
+
+    try {
+        const serie = await api.getById(id);
+        detailContainer.innerHTML = SerieDetail(serie);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (error) {
+        detailContainer.innerHTML = `
+            <div class="detail-error">
+                <h2>No encontramos esta historia</h2>
+                <p>Puede que haya sido eliminada o que el enlace no sea valido.</p>
+                <button type="button" class="btn-main" onclick="window.showSeriesList()">Volver a mi lista</button>
+            </div>
+        `;
+    }
+}
+
+function handleRoute() {
+    const match = window.location.hash.match(/^#serie\/(\d+)$/);
+    if (match) {
+        renderSerieDetail(match[1]);
+        return;
+    }
+    showListView();
+}
+
+window.openSerieDetail = (id) => {
+    window.location.hash = `serie/${id}`;
+};
+
+window.showSeriesList = () => {
+    history.pushState('', document.title, window.location.pathname + window.location.search);
+    showListView();
+};
+
+window.playMusic = (title) => {
+    const player = document.getElementById('music-player');
+    const text = document.getElementById('now-playing');
+    player.classList.remove('player-hidden');
+    text.innerText = `Reproduciendo OST: ${title}`;
+};
+
+window.playMusicById = async (id) => {
+    const serieId = Number(id);
+    const serie = allSeries.find((item) => item.id === serieId) || await api.getById(serieId);
+    window.playMusic(serie.title);
+};
+
 window.searchSeries = () => {
     const term = document.getElementById('search-input').value.toLowerCase();
-    const filtered = allSeries.filter(s => s.title.toLowerCase().includes(term));
+    const filtered = allSeries.filter((serie) => serie.title.toLowerCase().includes(term));
     renderGrid(filtered);
 };
 
-// Lógica de Filtro por Categoría
-window.filterByCategory = (cat) => {
-    const filtered = cat === 'all' ? allSeries : allSeries.filter(s => s.category === cat);
+window.filterByCategory = (cat, event) => {
+    const filtered = cat === 'all' ? allSeries : allSeries.filter((serie) => serie.category === cat);
     renderGrid(filtered);
-    
-    // Estilo de botón activo
-    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
+
+    document.querySelectorAll('.filter-btn').forEach((btn) => btn.classList.remove('active'));
+    event?.target?.classList.add('active');
 };
 
-// Cambio de Tema
 window.changeTheme = (theme) => {
-    console.log("Cambiando a tema:", theme);
-    if(theme === 'sakura' || theme === 'default') {
+    if (theme === 'sakura' || theme === 'default') {
         document.documentElement.removeAttribute('data-theme');
     } else {
         document.documentElement.setAttribute('data-theme', theme);
@@ -66,26 +118,19 @@ window.changeTheme = (theme) => {
     localStorage.setItem('selected-theme', theme);
 };
 
-// Cargar tema al iniciar
-const savedTheme = localStorage.getItem('selected-theme');
-if(savedTheme) window.changeTheme(savedTheme);
-
-// ELIMINAR
 window.deleteSerie = async (id) => {
-    if (confirm("¿Seguro que quieres eliminar esta historia? 💔")) {
+    if (confirm("Seguro que quieres eliminar esta historia?")) {
         await api.delete(id);
-        loadSeries(); // Recargar la lista
+        await loadSeries();
+        window.showSeriesList();
     }
 };
 
-// EDITAR
-let editingId = null;
-
 window.editSerie = async (id) => {
-    const series = allSeries.find(s => s.id === id);
+    const serieId = Number(id);
+    const series = allSeries.find((serie) => serie.id === serieId) || await api.getById(serieId);
     if (!series) return;
 
-    // Llenar el formulario con datos actuales
     document.getElementById('title').value = series.title;
     document.getElementById('genre').value = series.genre;
     document.getElementById('category').value = series.category;
@@ -93,21 +138,20 @@ window.editSerie = async (id) => {
     document.getElementById('description').value = series.description;
     document.getElementById('rating').value = series.rating;
 
-    editingId = id;
-    document.querySelector('#series-form button[type="submit"]').innerText = "ACTUALIZAR HISTORIA ✨";
-    document.getElementById('btn-cancel').style.display = 'inline-block'; // Mostramos cancelar
+    editingId = serieId;
+    document.querySelector('#series-form button[type="submit"]').innerText = 'Actualizar historia';
+    document.getElementById('btn-cancel').style.display = 'inline-block';
+    window.showSeriesList();
     window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
-// Cancelar el editar
 window.cancelEdit = () => {
     editingId = null;
     form.reset();
-    document.querySelector('#series-form button[type="submit"]').innerText = "GUARDAR EN MI LISTA ✨";
-    document.getElementById('btn-cancel').style.display = 'none'; // Escondemos el botón
+    document.querySelector('#series-form button[type="submit"]').innerText = 'Guardar en mi lista';
+    document.getElementById('btn-cancel').style.display = 'none';
 };
 
-// Modificar el event listener del FORM para que sepa si se crea/edita
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const data = {
@@ -116,21 +160,37 @@ form.addEventListener('submit', async (e) => {
         category: document.getElementById('category').value,
         image_url: document.getElementById('image_url').value,
         description: document.getElementById('description').value,
-        rating: parseInt(document.getElementById('rating').value),
+        rating: parseInt(document.getElementById('rating').value, 10),
         is_favorite: false
     };
 
     if (editingId) {
         await api.update(editingId, data);
         editingId = null;
-        document.querySelector('#series-form button').innerText = "GUARDAR EN MI LISTA ✨";
     } else {
         await api.create(data);
     }
 
-    form.reset();
-    loadSeries();
+    window.cancelEdit();
+    await loadSeries();
 });
 
-// Cargar al inicio
-document.addEventListener('DOMContentLoaded', loadSeries);
+document.addEventListener('DOMContentLoaded', async () => {
+    const savedTheme = localStorage.getItem('selected-theme');
+    if (savedTheme) window.changeTheme(savedTheme);
+
+    await loadSeries();
+    handleRoute();
+});
+
+window.addEventListener('hashchange', handleRoute);
+
+document.addEventListener('keydown', (event) => {
+    if (event.target.closest?.('button')) return;
+
+    const card = event.target.closest?.('.card');
+    if (!card || (event.key !== 'Enter' && event.key !== ' ')) return;
+
+    event.preventDefault();
+    window.openSerieDetail(card.dataset.serieId);
+});

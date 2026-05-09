@@ -18,6 +18,7 @@
     position: relative;
     transition: transform 0.3s ease;
     box-shadow: 0.3s ease;
+    cursor: pointer;
 }
 
 .card:hover {
@@ -55,7 +56,7 @@
 
 .btn-main {
     background-color: var(--accent);
-    color: white;
+    color: var(--button-text);
     padding: 12px;
     border: none;
     border-radius: 8px;
@@ -98,4 +99,133 @@
     font-weight: bold;
     margin-bottom: 10px;
     border: 1px solid var(--border);
+}
+
+.rating-stars {
+    color: var(--header-text);
+    display: inline-block;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+}
+
+.card-actions,
+.detail-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.btn-edit,
+.btn-delete {
+    border: none;
+    border-radius: 8px;
+    color: #ffffff;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 12px;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+}
+
+.btn-edit {
+    background: #5946c7;
+}
+
+.btn-delete {
+    background: #b72f59;
+}
+
+.btn-edit:hover,
+.btn-delete:hover {
+    filter: brightness(0.95);
+    transform: scale(1.02);
+}
+
+.detail-container {
+    margin: 2rem auto;
+}
+
+.detail-card {
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    border-radius: 20px;
+    box-shadow: 0 15px 30px rgba(57, 16, 130, 0.12);
+    overflow: hidden;
+    padding: 1.5rem;
+}
+
+.detail-back {
+    margin-bottom: 1.5rem;
+}
+
+.detail-layout {
+    display: grid;
+    grid-template-columns: minmax(240px, 360px) 1fr;
+    gap: 2rem;
+    align-items: stretch;
+}
+
+.detail-poster {
+    width: 100%;
+    min-height: 420px;
+    object-fit: cover;
+    border-radius: 16px;
+    border: 2px solid var(--border);
+}
+
+.detail-content {
+    color: var(--text-main);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.detail-content h2 {
+    color: var(--header-text);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    line-height: 1.05;
+    margin: 0.5rem 0 1rem;
+}
+
+.detail-content p {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin: 0 0 1.5rem;
+}
+
+.detail-meta {
+    color: var(--text-muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.detail-loading,
+.detail-error {
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    border-radius: 20px;
+    color: var(--text-main);
+    padding: 3rem;
+    text-align: center;
+}
+
+@media (max-width: 760px) {
+    .detail-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .detail-poster {
+        min-height: 320px;
+    }
+
+    .card-actions,
+    .detail-actions {
+        flex-direction: column;
+    }
 }

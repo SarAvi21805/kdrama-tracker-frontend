@@ -11,6 +11,14 @@ export const api = {
             throw error;
         }
     },
+    // Obtener serie por ID
+    async getById(id) {
+        const res = await fetch(`${API_URL}/series/${id}`);
+        if (!res.ok) {
+            throw new Error('Serie no encontrada');
+        }
+        return await res.json();
+    },
     // Crear serie
     async create(data) {
         const res = await fetch(`${API_URL}/series`, {
